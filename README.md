@@ -1,1 +1,5 @@
-# frontend
+## Rodar frontend:
+
+*npm install*
+
+*npm run dev*
