@@ -1,0 +1,39 @@
+.custom-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: "Poppins", sans-serif;
+}
+
+.custom-button.default {
+  background-color: #393953;
+  color: #f2f2f2;
+}
+
+.custom-button.primary {
+  background-color: #8be9fd;
+  color: #1e1e2f;
+}
+
+.custom-button.danger {
+  background-color: #ff79c6;
+  color: #1e1e2f;
+}
+
+.custom-button.success {
+  background-color: #50fa7b;
+  color: #1e1e2f;
+}
+
+.custom-button:hover:not(.disabled) {
+  filter: brightness(110%);
+}
+
+.custom-button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
