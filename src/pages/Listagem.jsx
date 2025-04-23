@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "../styles/Listar.css"
 
 function Listagem() {
     const [tarefas, setTarefas] = useState([]);
@@ -36,7 +37,7 @@ function Listagem() {
     // Carrega tarefas inicialmente
     useEffect(() => {
         async function carregar() {
-            const tarefasCarregadas = await fetch('http://localhost:3001/tarefas');
+            const tarefasCarregadas = await fetch('http://localhost:3000/tarefas');
             const dados = await tarefasCarregadas.json();
             setTarefas(dados);
         }
@@ -84,7 +85,6 @@ function Listagem() {
     const handleExcluirColunas = (id) =>{
         const idParaExcluir = id;
         setColunas(colunas => colunas.filter(item => item.id !== idParaExcluir))
-
     }
 
     // Funções para drag and drop
@@ -111,7 +111,7 @@ function Listagem() {
             setTarefas(tarefasAtualizadas);
 
             // Atualização no servidor
-            await fetch(`http://localhost:3001/tarefas/${draggedItem.id}`, {
+            await fetch(`http://localhost:3000/tarefas/${draggedItem.id}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ estado: novoEstado })
@@ -125,7 +125,6 @@ function Listagem() {
         setDraggedItem(null);
     };
 
-
     return (
         <div>
             <h2>Listagem de tarefas</h2>
@@ -136,29 +135,28 @@ function Listagem() {
                     return (
                         <div 
                             key={coluna.id} 
-                            className={coluna.name} 
+                            className="coluna"
                             onDragOver={handleDragOver}
                             onDrop={(e) => handleDrop(e, coluna.estado)}
                         >
                             <h2>{coluna.titulo}</h2>
-                            <button onClick={()=> {handleExcluirColunas(coluna.id)
-                            }}>deletar</button>
+                            <button onClick={() => { handleExcluirColunas(coluna.id) }}>deletar</button>
                             <div className="tarefas">
                                 {agruparTarefas.map(tarefa => (
                                     <div 
                                         key={tarefa.id} 
+                                        className="tarefa"
                                         draggable
                                         onDragStart={(e) => handleDragStart(e, tarefa)} 
                                         onClick={() => handleFocar(tarefa)}
                                     >
                                         <h3>{tarefa.titulo}</h3>
-                                        
                                         <p>descrição: {tarefa.descricao}</p>
                                         <div className="prioridade">
-                                        <p>prioridade: {tarefa.prioridade}</p>
+                                            <p>prioridade: {tarefa.prioridade}</p>
                                         </div>
                                         <p>prazo: {tarefa.prazo}</p>
-                                        <button >editar</button>
+                                        <button>editar</button>
                                     </div>
                                 ))}
                             </div>

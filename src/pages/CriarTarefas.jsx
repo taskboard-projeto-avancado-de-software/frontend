@@ -1,4 +1,5 @@
 import {useState } from "react";
+import "../styles/Criar.css"
 
 
 function Criar() {

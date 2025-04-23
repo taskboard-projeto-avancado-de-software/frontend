@@ -1,0 +1,155 @@
+/* Estilos gerais */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1e1e1e;
+    color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+  }
+  
+  h2 {
+    color: #7c3aed;
+  }
+  
+  /* Estilos para as colunas de tarefas */
+  .colunas_tarefas {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 2rem;
+  }
+  
+  .colunas_tarefas .coluna {
+    background-color: #2a2a2a;
+    padding: 1rem;
+    border-radius: 12px;
+    width: 250px;
+    box-shadow: 0 0 10px rgba(124, 58, 237, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 3px solid #7c3aed; /* Adicionando uma borda roxa para destacar */
+    transition: all 0.3s ease; /* Suaviza a transição de hover */
+  }
+  
+  .colunas_tarefas .coluna:hover {
+    border-color: #a855f7; /* Muda a cor da borda ao passar o mouse */
+  }
+  
+  .colunas_tarefas .coluna h2 {
+    margin-bottom: 1rem;
+    text-align: center;
+    color: #7c3aed;
+  }
+  
+  .colunas_tarefas .coluna button {
+    background-color: #ff5555;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+  }
+  
+  .colunas_tarefas .coluna button:hover {
+    background-color: #e60000;
+  }
+  
+  .tarefas {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .tarefas .tarefa {
+    background-color: #3a3a3a;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(124, 58, 237, 0.3);
+    cursor: pointer;
+  }
+  
+  .tarefas .tarefa h3 {
+    margin: 0;
+  }
+  
+  .tarefas .tarefa p {
+    margin: 0.5rem 0;
+  }
+  
+  .tarefas .tarefa .prioridade p {
+    font-weight: bold;
+    color: #ffac33;
+  }
+  
+  /* Estilos para o foco da tarefa */
+  .Foco {
+    background-color: #2a2a2a;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(124, 58, 237, 0.3);
+    max-width: 400px;
+    margin: 2rem auto;
+  }
+  
+  .Foco h2 {
+    color: #7c3aed;
+  }
+  
+  .Foco p {
+    margin: 0.5rem 0;
+  }
+  
+  /* Estilos para a criação de novas colunas */
+  .criar_colunas {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  
+  .criar_colunas button {
+    background-color: #7c3aed;
+    color: #fff;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .criar_colunas button:hover {
+    background-color: #6b2da8;
+  }
+  
+  .criar_colunas input {
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: none;
+    background-color: #3a3a3a;
+    color: #fff;
+    margin-right: 1rem;
+  }
+  
+  .criar_colunas input::placeholder {
+    color: #ccc;
+  }
+  
+  /* Estilos para o input de nova coluna */
+  .criar_colunas div {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .criar_colunas div button {
+    padding: 0.5rem 1rem;
+  }
+  
+  .criar_colunas div button:hover {
+    background-color: #ff5555;
+  }
+  
+  .criar_colunas div button:focus {
+    outline: none;
+  }
+  
