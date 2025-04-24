@@ -6,7 +6,7 @@ import Cadastro from "./pages/Cadastro";
 import Criar from "./pages/CriarTarefas";
 import PesquisaTarefas from "./pages/Pesquisa";
 import Listagem from "./pages/Listagem";
-import Editar from "./pages/Edição";
+import Editar from "./pages/Edicao";
 
 function App() {
   return (

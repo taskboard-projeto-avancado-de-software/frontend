@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "../styles/Pesquisa.css";
 
 const PesquisaTarefas = () => {
   const [tarefas, setTarefas] = useState([]);
@@ -25,7 +26,7 @@ const PesquisaTarefas = () => {
       if (filtros.prioridade) params.append('prioridade', filtros.prioridade);
       if (filtros.prazo) params.append('prazo', filtros.prazo);
 
-      const response = await fetch(`http://localhost:3001/tarefas?${params.toString()}`);
+      const response = await fetch(`http://localhost:3000/tarefas?${params.toString()}`);
       
       if (!response.ok) {
         throw new Error('Erro ao buscar tarefas');
@@ -71,7 +72,7 @@ const PesquisaTarefas = () => {
   ];
 
   return (
-    <div>
+    <div className="Pesquisar">
       <h1>Pesquisar Tarefas</h1>
       
       <form onSubmit={handleSubmit}>
@@ -87,7 +88,7 @@ const PesquisaTarefas = () => {
           />
         </div>
 
-        <div>
+        <div className="prioridade">
           <label htmlFor="prioridade">Prioridade:</label>
           <select
             id="prioridade"
@@ -103,7 +104,7 @@ const PesquisaTarefas = () => {
           </select>
         </div>
 
-        <div>
+        <div className="prazo">
           <label htmlFor="prazo">Prazo:</label>
           <select
             id="prazo"
@@ -130,7 +131,7 @@ const PesquisaTarefas = () => {
         {carregando ? (
           <p>Carregando resultados...</p>
         ) : (
-          <>
+          <div className="resultados">
             <h2>Resultados ({tarefas.length})</h2>
             {tarefas.length > 0 ? (
               <ul>
@@ -140,14 +141,13 @@ const PesquisaTarefas = () => {
                     <p>Descrição: {tarefa.descricao}</p>
                     <p>Prioridade: {tarefa.prioridade}</p>
                     <p>Prazo: {tarefa.prazo}</p>
-                    <p>Responsável: {tarefa.responsavel}</p>
                   </li>
                 ))}
               </ul>
             ) : (
               !erro && <p>Nenhuma tarefa encontrada com os filtros selecionados.</p>
             )}
-          </>
+          </div>
         )}
       </div>
     </div>

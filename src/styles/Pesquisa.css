@@ -1,0 +1,120 @@
+/* Estilos principais para o componente de pesquisa */
+.Pesquisar {
+    background-color: #1e1e1e;
+    color: #f4f4f4;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 400px;
+    margin: 2rem auto;
+    box-shadow: 0 0 10px rgba(124, 58, 237, 0.3);
+  }
+  
+  .Pesquisar h1 {
+    text-align: center;
+    color: #7c3aed;
+    margin-bottom: 1.5rem;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  /* Estilos para os campos de input e select */
+  input[type="text"],
+  select {
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid #3a3a3a;
+    background-color: #3a3a3a;
+    color: #fff;
+    font-size: 1rem;
+  }
+  
+  input[type="text"]::placeholder {
+    color: #ccc;
+  }
+  
+  label {
+    color: #ccc;
+    font-weight: bold;
+  }
+  
+  .prioridade,
+  .prazo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  /* Estilo para o botão */
+  button {
+    background-color: #7c3aed;
+    color: #fff;
+    border: none;
+    padding: 0.8rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 1rem;
+  }
+  
+  button:hover {
+    background-color: #6b2da8;
+  }
+  
+  button:disabled {
+    background-color: #888;
+    cursor: not-allowed;
+  }
+  
+  /* Exibição de erro */
+  div {
+    color: #ff5555;
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  /* Estilos para os resultados */
+  .resultados {
+    margin-top: 2rem;
+  }
+  
+  .resultados h2 {
+    color: #7c3aed;
+    text-align: center;
+  }
+  
+  .resultados ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .resultados li {
+    background-color: #3a3a3a;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    box-shadow: 0 0 5px rgba(124, 58, 237, 0.3);
+  }
+  
+  .resultados li h3 {
+    color: #7c3aed;
+  }
+  
+  .resultados li p {
+    margin: 0.5rem 0;
+  }
+  
+  .resultados li p:last-child {
+    font-weight: bold;
+    color: #ffac33;
+  }
+  
+  /* Exibição de carregando */
+  p {
+    text-align: center;
+    color: #ccc;
+  }
+  

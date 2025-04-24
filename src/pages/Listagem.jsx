@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "../styles/Listar.css"
+import { useNavigate } from "react-router-dom";
 
 function Listagem() {
     const [tarefas, setTarefas] = useState([]);
@@ -33,6 +34,7 @@ function Listagem() {
         id: ''
     });
     const [draggedItem, setDraggedItem] = useState(null);
+    const navigate = useNavigate();
 
     // Carrega tarefas inicialmente
     useEffect(() => {
@@ -124,6 +126,7 @@ function Listagem() {
         
         setDraggedItem(null);
     };
+
 
     return (
         <div>
