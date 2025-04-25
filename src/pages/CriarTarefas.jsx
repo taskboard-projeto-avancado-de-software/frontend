@@ -10,7 +10,7 @@ function Criar() {
     descricao: '',
     prioridade: 'media',
     prazo: '',
-    estado: 'pendente'
+    estado: 'A fazer'
   })
 
   // Função para lidar com mudanças nos inputs do formulário
@@ -52,7 +52,7 @@ function Criar() {
 
         <textarea name="descricao" value={tarefaAtual.descricao}  onChange={handleInputChange} placeholder="escricao"></textarea> <br />
 
-        <input type="date" name="prazo" value={tarefaAtual.prazo} placeholder="prazo"/> <br />
+        <input type="date" name="prazo" value={tarefaAtual.prazo} onChange={handleInputChange} placeholder="prazo"/> <br />
 
 
         <select name="prioridade" value={tarefaAtual.prioridade} onChange={handleInputChange} >

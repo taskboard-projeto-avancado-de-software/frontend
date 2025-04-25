@@ -4,27 +4,20 @@ import { useNavigate } from "react-router-dom";
 
 function Listagem() {
     const [tarefas, setTarefas] = useState([]);
-    const [colunas, setColunas] = useState([
-        {
-            id: 1,
-            titulo: 'criada',
-            estado: 'pendente'
-        },
-        {
-            id: 2,
-            titulo: 'em processo',
-            estado: 'em processo'
-        },
-        {
-            id: 3,
-            titulo: 'concluida',
-            estado: 'concluida'
-        }
-    ]);
+    const [colunas, setColunas] = useState([]);
+
 
     const [visible, setVisible] = useState(false);
     const [mostrarInputColuna, setMostrarInputColuna] = useState(false);
-    const [novoNomeColuna, setNovoNomeColuna] = useState('');
+
+    const [novoNomeColuna, setNovoNomeColuna] = useState({
+        id: colunas.length ,
+        titulo: '',
+        idUsuario:''
+
+    });
+
+
     const [foco, setFoco] = useState({
         titulo: "",
         descricao: "",
@@ -46,50 +39,151 @@ function Listagem() {
         carregar();
     }, []);
 
-    // Cria colunas baseadas nos estados das tarefas
+            // Carrega colunas inicialmente
     useEffect(() => {
-        const estadosUnicos = [...new Set(tarefas.map(tarefa => tarefa.estado))];
+        async function carregarColunas() {
+            const colunasCarregadas = await fetch('http://localhost:3000/colunas');
+            const dadosColunas = await colunasCarregadas.json();
+            setColunas(dadosColunas);
+        }
+        carregarColunas();
+    }, []);
+
+
+    
+    // VERÇÂO ANTIGA DA FUNÇÃO DE CARREGAR COLUNAS DE QUANDO NÂO EXISTIA UMA ENTIDADE COLUNA:
+
+    //  Cria colunas baseadas nos estados das tarefas
+    // useEffect(() => {
+    //     const estadosUnicos = [...new Set(tarefas.map(tarefa => tarefa.estado))];
         
-        estadosUnicos.forEach(estado => {
-            const colunaExistente = colunas.find(coluna => coluna.estado === estado);
-            if (!colunaExistente) {
-                setColunas(prevColunas => [
-                    ...prevColunas,
-                    {
-                        id: prevColunas.length + 1,
-                        titulo: estado,
-                        estado: estado
-                    }
-                ]);
-            }
-        });
-    }, [tarefas]);
+    //     estadosUnicos.forEach(estado => {
+    //         const colunaExistente = colunas.find(coluna => coluna.estado === estado);
+    //         if (!colunaExistente) {
+    //             setColunas(prevColunas => [
+    //                 ...prevColunas,
+    //                 {
+    //                     id: prevColunas.length + 1,
+    //                     titulo: estado,
+    //                     estado: estado
+    //                 }
+    //             ]);
+    //         }
+    //     });
+    // }, [tarefas]);
+
+
 
     const handleFocar = (tarefa) => {
         setFoco(tarefa);
         setVisible(true);
     };
 
-    const handleCriarNovaColuna = () => {
-        if (novoNomeColuna.trim() !== '') {
-            const novaColuna = {
-                id: colunas.length + 1,
-                titulo: novoNomeColuna,
-                estado: novoNomeColuna.toLowerCase()
-            };
-            
-            setColunas([...colunas, novaColuna]);
-            setNovoNomeColuna('');
+
+
+
+
+
+
+
+
+    // NOVA VERSÃO DA FUNÇÃO DE CRIAR COLUNAS
+    const handleCriarNovaColuna = (e) => {
+        e.preventDefault();
+        const url = `http://localhost:3000/colunas`
+        const method ='POST';
+    
+        fetch(url, {
+          method: method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(novoNomeColuna)
+        })
+        .then(response => response.json())
+        .then(data => {
+  
+            setColunas([...colunas, data]);
             setMostrarInputColuna(false);
-        }
+            setNovoNomeColuna({
+                id: 0, 
+                titulo: '',
+                idUsuario: ''
+            });
+        })
+        .catch(error => console.error('Erro:', error));
     };
+    
+    // VERSÂO ANTIGA DE CRIAR COLUNA
+    // função para incluir uma nova coluna na API
+    // const handleCriarNovaColuna = () => {
+    //     e.preventDefault();
+    //     const url = `http://localhost:3000/colunas`
+    //     const method ='POST';
+    
+    //     fetch(url, {
+    //       method: method,
+    //       headers: { 'Content-Type': 'application/json' },
+    //       body: JSON.stringify(novoNomeColuna)
+    //     })
 
-    const handleExcluirColunas = (id) =>{
+    //     setNovoNomeColuna({
+    //         id: colunas.length +1 ,
+    //         titulo: '',
+    //         idUsuario:''
+    
+    //     });
+    // };
+
+
+
+
+
+
+
+
+
+    // função para atualizar os dados da coluna que sera criada
+    const handleInputChange = (e) =>{
+        const {name,value} = e.target;
+
+        // setColunas({...novoNomeColuna,[name]:value});
+
+        setNovoNomeColuna({...novoNomeColuna,[name]:value})
+     };
+
+
+
+
+
+    // FUNÇÃO ANTIGA PARA APAGAR UMA COLUNA (AINDA NÃO EXISTIA A ENTIDADE COLUNAS)
+    // const handleExcluirColunas = (id) =>{
+    //     const idParaExcluir = id;
+    //     setColunas(colunas => colunas.filter(item => item.id !== idParaExcluir))  
+    // }
+
+
+    // NOVA FUNÇÃO PARA APAGAR UMA COLUNA
+    const handleExcluirColunas = (id) => {
         const idParaExcluir = id;
-        setColunas(colunas => colunas.filter(item => item.id !== idParaExcluir))
-    }
+        setColunas(colunas => colunas.filter(item => item.id !== idParaExcluir)) 
+        
+        fetch(`http://localhost:3000/colunas/${id}`, { method: 'DELETE' })
+          .then((response) => response.json())
+          .then(() => {
+            console.log('Coluna excluída com sucesso');
+          })
+          .catch((error) => {
+            console.error('Erro ao excluir coluna:', error);
+          });
+      };
+    
 
-    // Funções para drag and drop
+
+
+
+
+
+
+    // Funções para drag and drop (ARRASTAR AS TAREGAS E MUDAR O ESTADO DELAS)
     const handleDragStart = (e, tarefa) => {
         setDraggedItem(tarefa);
         e.dataTransfer.effectAllowed = "move";
@@ -128,19 +222,22 @@ function Listagem() {
     };
 
 
+
+
+
     return (
         <div>
             <h2>Listagem de tarefas</h2>
 
             <div className="colunas_tarefas">
                 {colunas.map(coluna => {
-                    const agruparTarefas = tarefas.filter(tarefa => tarefa.estado === coluna.estado);
+                    const agruparTarefas = tarefas.filter(tarefa => tarefa.estado === coluna.titulo);
                     return (
                         <div 
                             key={coluna.id} 
                             className="coluna"
                             onDragOver={handleDragOver}
-                            onDrop={(e) => handleDrop(e, coluna.estado)}
+                            onDrop={(e) => handleDrop(e, coluna.titulo)}
                         >
                             <h2>{coluna.titulo}</h2>
                             <button onClick={() => { handleExcluirColunas(coluna.id) }}>deletar</button>
@@ -174,16 +271,24 @@ function Listagem() {
                 {mostrarInputColuna && (
                     <div>
                         <input 
-                            type="text" 
+                            type="text"
+                            name="titulo"
                             placeholder="nome da nova coluna" 
-                            value={novoNomeColuna}
-                            onChange={(e) => setNovoNomeColuna(e.target.value)}
+                            value={novoNomeColuna.titulo}
+                            onChange={(e) => handleInputChange(e)}
                             onKeyPress={(e) => e.key === 'Enter' && handleCriarNovaColuna()}
                         />
                         <button onClick={handleCriarNovaColuna}>Criar</button>
                         <button onClick={() => {
                             setMostrarInputColuna(false);
-                            setNovoNomeColuna('');
+
+                            //mudei aqui
+                            setNovoNomeColuna({
+                                id: colunas.length ,
+                                titulo: '',
+                                idUsuario:''
+                        
+                            });
                         }}>Cancelar</button>
                     </div>
                 )}

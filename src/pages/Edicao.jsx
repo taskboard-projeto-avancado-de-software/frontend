@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import "../styles/Editar.css"
 
 
+// BAIXAR TODAS AS TAREFAS E SELECIONAR APENAS A QUE SERA USANDA UNAS O FILTER
+
 function Editar({tarefa}) {
   const [tarefaAtual, setTarefaAtual] = useState(tarefa); 
 
