@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import "../styles/Cadastro.css";
+import api from "../services/api";
 
 const Cadastro = () => {
   const navigate = useNavigate();
@@ -20,21 +21,17 @@ const Cadastro = () => {
     }
 
     try {
-      const response = await fetch(
-        `http://localhost:3000/usuarios?email=${email}`
-      );
-      const usuarios = await response.json();
+      const response = await api.get(`/usuarios`, {
+        params: { email }
+      });
+      const usuarios = response.data;
 
       if (usuarios.length > 0) {
         setErro("E-mail já cadastrado.");
         return;
       }
 
-      await fetch("http://localhost:3000/usuarios", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nome, email, senha }),
-      });
+      await api.post("/usuarios", { nome, email, senha });
 
       navigate("/login");
     } catch (error) {

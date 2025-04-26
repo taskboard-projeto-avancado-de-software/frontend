@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
+import api from "../services/api";
+import Cabecalho from "../components/Cabecalho";
 
 function Editar() {
 
   const navigate = useNavigate();
 
-
-  const { id } = useParams(); 
+  const { id } = useParams();
   const [tarefaAtual, setTarefaAtual] = useState({
     id: '',
     titulo: '',
@@ -15,7 +16,7 @@ function Editar() {
     prioridade: '',
     prazo: '',
   });
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
 
   // Função para lidar com mudanças nos na tarefa
   const handleInputChange = (e) => {
@@ -29,63 +30,49 @@ function Editar() {
   // FUNÇÃO PARA CARREGAR AS TAREFAS E FILTRAR A QUE TIVER O ID COMPATÍVEL
   useEffect(() => {
     async function carregar() {
-      setLoading(true); // Inicia o carregamento
+      setLoading(true);
       try {
-        const tarefasCarregadas = await fetch('http://localhost:3000/tarefas');
-        const dados = await tarefasCarregadas.json();
+        const response = await api.get("/tarefas");
+        const dados = response.data;
         const tarefaEncontrada = dados.find(tarefa => tarefa.id === parseInt(id));
         if (tarefaEncontrada) {
-          setTarefaAtual(tarefaEncontrada); 
+          setTarefaAtual(tarefaEncontrada);
         }
       } catch (error) {
         console.error('Erro ao carregar tarefas:', error);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     }
     carregar();
-  }, [id]); 
+  }, [id]);
 
   // FUNÇÃO PARA ATUALIZAR A TAREFA
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const url = `http://localhost:3000/tarefas/${tarefaAtual.id}`;
-    const method = 'PUT';
 
-    fetch(url, {
-      method: method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(tarefaAtual)
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Tarefa atualizada:', data);
-      })
-      .catch((error) => {
-        console.error('Erro ao atualizar tarefa:', error);
-      });
-
-      navigate("/listar")
-
+    try {
+      const response = await api.put(`/tarefas/${tarefaAtual.id}`, tarefaAtual);
+      console.log('Tarefa atualizada:', response.data);
+      navigate("/listar");
+    } catch (error) {
+      console.error('Erro ao atualizar tarefa:', error);
+    }
   };
 
   // FUNÇÃO PARA EXCLUIR UMA TAREFA COM CONFIRMAÇÃO
-  const handleExcluir = (id) => {
+  const handleExcluir = async (id) => {
     const confirmDelete = window.confirm("Tem certeza que deseja excluir esta tarefa?");
+
     if (confirmDelete) {
-      fetch(`http://localhost:3000/tarefas/${id}`, { method: 'DELETE' })
-        .then((response) => response.json())
-        .then(() => {
-          console.log('Tarefa excluída com sucesso');
-          
-        })
-        .catch((error) => {
-          console.error('Erro ao excluir tarefa:', error);
-        });
+      try {
+        await api.delete(`/tarefas/${id}`);
+        console.log('Tarefa excluída com sucesso');
+        navigate("/listar");
+      } catch (error) {
+        console.error('Erro ao excluir tarefa:', error);
+      }
     }
-
-    navigate("/listar")
-
   };
 
   if (loading) {
@@ -93,44 +80,53 @@ function Editar() {
   }
 
   return (
-    <div className="tarefas-container">
-      <h2>Gerenciador de Tarefas</h2>
 
-      {/* Formulário para editar tarefas */}
-      <form onSubmit={handleSubmit} className="tarefa-form">
-        <input
-          type="text"
-          name="titulo"
-          value={tarefaAtual.titulo}
-          onChange={handleInputChange}
-          required
-        />
-        <textarea
-          name="descricao"
-          value={tarefaAtual.descricao}
-          onChange={handleInputChange}
-        />
-        <select
-          name="prioridade"
-          value={tarefaAtual.prioridade}
-          onChange={handleInputChange}
-        >
-          <option value="alta">Alta</option>
-          <option value="media">Média</option>
-          <option value="baixa">Baixa</option>
-        </select>
-        <input
-          type="date"
-          name="prazo"
-          value={tarefaAtual.prazo}
-          onChange={handleInputChange}
-        />
-        <button type="submit">Atualizar Tarefa</button>
-        <button type="button" onClick={() => handleExcluir(tarefaAtual.id)}>
-          Excluir
-        </button>
-      </form>
+    <div className="container-tela">
+
+      <Cabecalho/>
+
+      <div className="tarefas-container">
+        <h2>Gerenciador de Tarefas</h2>
+
+        {/* Formulário para editar tarefas */}
+        <form onSubmit={handleSubmit} className="tarefa-form">
+          <input
+            type="text"
+            name="titulo"
+            value={tarefaAtual.titulo}
+            onChange={handleInputChange}
+            required
+          />
+          <textarea
+            name="descricao"
+            value={tarefaAtual.descricao}
+            onChange={handleInputChange}
+          />
+          <select
+            name="prioridade"
+            value={tarefaAtual.prioridade}
+            onChange={handleInputChange}
+          >
+            <option value="alta">Alta</option>
+            <option value="media">Média</option>
+            <option value="baixa">Baixa</option>
+          </select>
+          <input
+            type="date"
+            name="prazo"
+            value={tarefaAtual.prazo}
+            onChange={handleInputChange}
+          />
+          <button type="submit">Atualizar Tarefa</button>
+          <button type="button" onClick={() => handleExcluir(tarefaAtual.id)}>
+            Excluir
+          </button>
+        </form>
+      </div>
+
     </div>
+
+
   );
 }
 

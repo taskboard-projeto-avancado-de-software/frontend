@@ -7,6 +7,7 @@ import Criar from "./pages/CriarTarefas";
 import PesquisaTarefas from "./pages/Pesquisa";
 import Listagem from "./pages/Listagem";
 import Editar from "./pages/Edicao";
+import Home from "./pages/Home";
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
       <Route path="/pesquisar" element={<PesquisaTarefas/>}></Route>
       <Route path="/listar" element={<Listagem/>}></Route>
       <Route path="/editar/:id" element={<Editar/>}></Route>
-
+      <Route path="/home" element={<Home/>}></Route>
     </Routes>
   );
 }
