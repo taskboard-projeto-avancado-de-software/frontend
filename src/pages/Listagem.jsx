@@ -7,6 +7,33 @@ function Listagem() {
     const [colunas, setColunas] = useState([]);
 
 
+
+
+const navigate = useNavigate();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     const [visible, setVisible] = useState(false);
     const [mostrarInputColuna, setMostrarInputColuna] = useState(false);
 
@@ -27,7 +54,7 @@ function Listagem() {
         id: ''
     });
     const [draggedItem, setDraggedItem] = useState(null);
-    const navigate = useNavigate();
+
 
     // Carrega tarefas inicialmente
     useEffect(() => {
@@ -224,6 +251,32 @@ function Listagem() {
 
 
 
+/////////////////////////////////////////////////////////////////////////
+
+
+const handleEditar = (id) => {
+    // Navega para a página de edição passando o id da tarefa
+    navigate(`/editar/${id}`);
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
 
     return (
         <div>
@@ -256,7 +309,7 @@ function Listagem() {
                                             <p>prioridade: {tarefa.prioridade}</p>
                                         </div>
                                         <p>prazo: {tarefa.prazo}</p>
-                                        <button>editar</button>
+                                        <button onClick={() => handleEditar(tarefa.id)}>editar</button>
                                     </div>
                                 ))}
                             </div>

@@ -1,13 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import "../styles/Editar.css"
+import { Navigate, useParams } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+
+function Editar() {
+
+  const navigate = useNavigate();
 
 
-// BAIXAR TODAS AS TAREFAS E SELECIONAR APENAS A QUE SERA USANDA UNAS O FILTER
+  const { id } = useParams(); 
+  const [tarefaAtual, setTarefaAtual] = useState({
+    id: '',
+    titulo: '',
+    descricao: '',
+    prioridade: '',
+    prazo: '',
+  });
+  const [loading, setLoading] = useState(true); 
 
-function Editar({tarefa}) {
-  const [tarefaAtual, setTarefaAtual] = useState(tarefa); 
-
-  // Função para lidar com mudanças nos inputs do formulário
+  // Função para lidar com mudanças nos na tarefa
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setTarefaAtual((prevTarefa) => ({
@@ -16,6 +26,27 @@ function Editar({tarefa}) {
     }));
   };
 
+  // FUNÇÃO PARA CARREGAR AS TAREFAS E FILTRAR A QUE TIVER O ID COMPATÍVEL
+  useEffect(() => {
+    async function carregar() {
+      setLoading(true); // Inicia o carregamento
+      try {
+        const tarefasCarregadas = await fetch('http://localhost:3000/tarefas');
+        const dados = await tarefasCarregadas.json();
+        const tarefaEncontrada = dados.find(tarefa => tarefa.id === parseInt(id));
+        if (tarefaEncontrada) {
+          setTarefaAtual(tarefaEncontrada); 
+        }
+      } catch (error) {
+        console.error('Erro ao carregar tarefas:', error);
+      } finally {
+        setLoading(false); 
+      }
+    }
+    carregar();
+  }, [id]); 
+
+  // FUNÇÃO PARA ATUALIZAR A TAREFA
   const handleSubmit = (e) => {
     e.preventDefault();
     const url = `http://localhost:3000/tarefas/${tarefaAtual.id}`;
@@ -28,55 +59,60 @@ function Editar({tarefa}) {
     })
       .then((response) => response.json())
       .then((data) => {
-        // Pode adicionar algo aqui para lidar com a resposta (ex: redirecionar, exibir mensagem de sucesso, etc)
         console.log('Tarefa atualizada:', data);
       })
       .catch((error) => {
         console.error('Erro ao atualizar tarefa:', error);
       });
+
+      navigate("/listar")
+
   };
 
-  // Função para excluir uma tarefa
+  // FUNÇÃO PARA EXCLUIR UMA TAREFA COM CONFIRMAÇÃO
   const handleExcluir = (id) => {
-    fetch(`http://localhost:3000/tarefas/${id}`, { method: 'DELETE' })
-      .then((response) => response.json())
-      .then(() => {
-        // Lidar com a exclusão da tarefa (ex: redirecionar ou mostrar uma mensagem de sucesso)
-        console.log('Tarefa excluída com sucesso');
-      })
-      .catch((error) => {
-        console.error('Erro ao excluir tarefa:', error);
-      });
+    const confirmDelete = window.confirm("Tem certeza que deseja excluir esta tarefa?");
+    if (confirmDelete) {
+      fetch(`http://localhost:3000/tarefas/${id}`, { method: 'DELETE' })
+        .then((response) => response.json())
+        .then(() => {
+          console.log('Tarefa excluída com sucesso');
+          
+        })
+        .catch((error) => {
+          console.error('Erro ao excluir tarefa:', error);
+        });
+    }
+
+    navigate("/listar")
+
   };
 
-  // Verificando se a tarefa é recebida corretamente
-  useEffect(() => {
-    if (!tarefa) {
-      console.error('Tarefa não recebida corretamente!');
-    }
-  }, [tarefa]);
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
 
   return (
     <div className="tarefas-container">
       <h2>Gerenciador de Tarefas</h2>
 
-      {/* Formulário para criar/editar tarefas */}
+      {/* Formulário para editar tarefas */}
       <form onSubmit={handleSubmit} className="tarefa-form">
         <input
           type="text"
           name="titulo"
-          value={tarefaAtual.titulo} // Usando o valor real do estado
+          value={tarefaAtual.titulo}
           onChange={handleInputChange}
           required
         />
         <textarea
           name="descricao"
-          value={tarefaAtual.descricao} // Usando o valor real do estado
+          value={tarefaAtual.descricao}
           onChange={handleInputChange}
         />
         <select
           name="prioridade"
-          value={tarefaAtual.prioridade} // Usando o valor real do estado
+          value={tarefaAtual.prioridade}
           onChange={handleInputChange}
         >
           <option value="alta">Alta</option>
@@ -86,7 +122,7 @@ function Editar({tarefa}) {
         <input
           type="date"
           name="prazo"
-          value={tarefaAtual.prazo} // Usando o valor real do estado
+          value={tarefaAtual.prazo}
           onChange={handleInputChange}
         />
         <button type="submit">Atualizar Tarefa</button>
@@ -98,4 +134,4 @@ function Editar({tarefa}) {
   );
 }
 
- export default Editar;
+export default Editar;
