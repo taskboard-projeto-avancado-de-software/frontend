@@ -10,9 +10,6 @@ function Cabecalho() {
 
   return (
     <div className="cabecalho">
-      {/* <button className="cabecalho-botao" onClick={() => navigate('/home')}>
-        Voltar
-      </button> */}
 
       <Button variant='default' onClick={() => navigate('/home')}>
         Voltar
