@@ -33,10 +33,13 @@
   border-radius: 8px;
   background-color: #3a3a3a;
   color: #fff;
+  box-sizing: border-box;
+  height: 45px;
 }
 
 .login-form input::placeholder {
   color: #ccc;
+  font-size: 1rem;
 }
 
 .erro {
