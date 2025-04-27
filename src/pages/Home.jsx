@@ -21,7 +21,7 @@ function Home() {
           <span className="greeting">Olá, {nome}</span>
 
           <Button onClick={() => navigate('/pesquisar')}>
-            Pesquisar
+            Pesquisar Tarefa
           </Button>
           <Button onClick={() => navigate('/')}>
             Sair

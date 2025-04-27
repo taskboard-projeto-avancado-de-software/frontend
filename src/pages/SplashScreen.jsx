@@ -9,7 +9,7 @@ const SplashScreen = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       limparUsuario();
-      navigate("/cadastro");
+      navigate("/login");
     }, 5000);
 
     return () => clearTimeout(timer);

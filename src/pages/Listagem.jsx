@@ -108,14 +108,18 @@ function Listagem() {
 
   // NOVA FUNÇÃO PARA APAGAR UMA COLUNA
   const handleExcluirColunas = async (id) => {
-    const idParaExcluir = id;
-    setColunas(colunas => colunas.filter(item => item.id !== idParaExcluir));
 
-    try {
-      await api.delete(`/colunas/${id}`);
-      console.log('Coluna excluída com sucesso');
-    } catch (error) {
-      console.error('Erro ao excluir coluna:', error);
+    const confirmDelete = window.confirm("Tem certeza que deseja excluir esta coluna?");
+
+    if(confirmDelete){
+      try {
+        const idParaExcluir = id;
+        setColunas(colunas => colunas.filter(item => item.id !== idParaExcluir));
+        await api.delete(`/colunas/${id}`);
+        console.log('Coluna excluída com sucesso');
+      } catch (error) {
+        console.error('Erro ao excluir coluna:', error);
+      }
     }
   };
 
@@ -173,7 +177,7 @@ function Listagem() {
 
   return (
 
-    <div>
+    <div className="listagem">
 
       {/* Renderiza a notificação*/}
       {notification && (
@@ -183,6 +187,7 @@ function Listagem() {
       )}
 
       <div className="colunas_tarefas">
+
         {colunas.map(coluna => {
           const agruparTarefas = tarefas.filter(tarefa => tarefa.estado === coluna.titulo);
           return (
@@ -193,47 +198,45 @@ function Listagem() {
               onDrop={(e) => handleDrop(e, coluna.titulo)}
             >
 
-              <h2>{coluna.titulo}</h2>
-              <button onClick={() => { handleExcluirColunas(coluna.id) }}>Deletar</button>
+              <div className="topo-coluna">
+                <h2>{coluna.titulo}</h2>
+                <button onClick={() => { handleExcluirColunas(coluna.id) }}>Deletar</button>
+              </div>
+
               <div className="tarefas">
                 {agruparTarefas.map(tarefa => (
-                  <div
+
+                  <div className="tarefa"
                     key={tarefa.id}
-                    className="tarefa"
                     draggable
                     onDragStart={(e) => handleDragStart(e, tarefa)}
                     onClick={() => handleFocar(tarefa)}
                   >
                     <h3>{tarefa.titulo}</h3>
                     <p>Descrição: {tarefa.descricao}</p>
-                    <div className="prioridade">
-                      <p>Prioridade: {tarefa.prioridade}</p>
-                    </div>
+                    <p className="prioridade">Prioridade: {tarefa.prioridade.toUpperCase()}</p>
                     <p>Prazo: {tarefa.prazo}</p>
                     <button onClick={() => handleEditar(tarefa.id)}>Editar</button>
+
                   </div>
+
                 ))}
+
               </div>
+
             </div>
           );
         })}
+
       </div>
 
       <div className="criar_colunas">
-
-        <div className="botoes-criar">
-          <button onClick={() => navigate('/criar')}>Criar Tarefa</button>
-
-          <button onClick={() => setMostrarInputColuna(true)}>Adicionar Coluna</button>
-        </div>
-
-
         {mostrarInputColuna && (
           <div>
             <input
               type="text"
               name="titulo"
-              placeholder="nome da nova coluna"
+              placeholder="Nome da nova coluna"
               value={novoNomeColuna.titulo}
               onChange={(e) => handleInputChange(e)}
               onKeyPress={(e) => e.key === 'Enter' && handleCriarNovaColuna()}
@@ -251,6 +254,11 @@ function Listagem() {
             }}>Cancelar</button>
           </div>
         )}
+      </div>
+
+      <div className="botoes-criar">
+        <button onClick={() => navigate('/criar')}>Criar Tarefa</button>
+        <button onClick={() => setMostrarInputColuna(true)}>Adicionar Coluna</button>
       </div>
 
       {visible && (
