@@ -30,7 +30,7 @@ function Listagem() {
 
   const novoNomeColunaComIdUsuario = {
     ...novoNomeColuna,
-    idUsuario:obterId()
+    idUsuario: obterId()
   }
 
   const [foco, setFoco] = useState({
@@ -42,6 +42,9 @@ function Listagem() {
     id: ''
   });
   const [draggedItem, setDraggedItem] = useState(null);
+
+  // notificacao
+  const [notification, setNotification] = useState('');
 
   // Carrega tarefas inicialmente
   useEffect(() => {
@@ -67,7 +70,7 @@ function Listagem() {
           api.get("/colunas", { params: { idUsuario: "default" } }),
           api.get("/colunas", { params: { idUsuario } })
         ]);
-  
+
         const colunasCombinadas = [...padraoResponse.data, ...usuarioResponse.data];
         setColunas(colunasCombinadas);
       } catch (error) {
@@ -76,7 +79,7 @@ function Listagem() {
     }
     carregarColunas();
   }, []);
-  
+
 
 
   const handleFocar = (tarefa) => {
@@ -152,6 +155,18 @@ function Listagem() {
       // Atualização no servidor
       await api.patch(`/tarefas/${draggedItem.id}`, { estado: novoEstado });
 
+      // Exibir a notificação
+      if (novoEstado === "Feito") {
+
+        setNotification(`Tarefa Concluída, você moveu a tarefa para Feito.`);
+
+        // Esconde a notificação após 3 segundos
+        setTimeout(() => {
+          setNotification('');
+        }, 3000);
+
+      }
+
     } catch (error) {
       console.error("Erro ao atualizar tarefa:", error);
       setTarefas(tarefas); // Reverte em caso de erro
@@ -169,7 +184,13 @@ function Listagem() {
   return (
 
     <div>
-      <h2>Listagem de tarefas</h2>
+
+      {/* Renderiza a notificação*/}
+      {notification && (
+        <div className="notification">
+          {notification}
+        </div>
+      )}
 
       <div className="colunas_tarefas">
         {colunas.map(coluna => {
@@ -181,8 +202,9 @@ function Listagem() {
               onDragOver={handleDragOver}
               onDrop={(e) => handleDrop(e, coluna.titulo)}
             >
+              
               <h2>{coluna.titulo}</h2>
-              <button onClick={() => { handleExcluirColunas(coluna.id) }}>deletar</button>
+              <button onClick={() => { handleExcluirColunas(coluna.id) }}>Deletar</button>
               <div className="tarefas">
                 {agruparTarefas.map(tarefa => (
                   <div
@@ -193,12 +215,12 @@ function Listagem() {
                     onClick={() => handleFocar(tarefa)}
                   >
                     <h3>{tarefa.titulo}</h3>
-                    <p>descrição: {tarefa.descricao}</p>
+                    <p>Descrição: {tarefa.descricao}</p>
                     <div className="prioridade">
-                      <p>prioridade: {tarefa.prioridade}</p>
+                      <p>Prioridade: {tarefa.prioridade}</p>
                     </div>
-                    <p>prazo: {tarefa.prazo}</p>
-                    <button onClick={() => handleEditar(tarefa.id)}>editar</button>
+                    <p>Prazo: {tarefa.prazo}</p>
+                    <button onClick={() => handleEditar(tarefa.id)}>Editar</button>
                   </div>
                 ))}
               </div>
