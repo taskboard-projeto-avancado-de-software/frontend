@@ -1,0 +1,31 @@
+.cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    margin-left: 40px;
+    margin-top: 10px;
+  }
+  
+  .cabecalho-botao {
+    padding: 8px 16px;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .cabecalho-botao:hover {
+    background-color: #1976D2;
+  }
+  
+  .cabecalho-direita {
+    display: flex;
+    align-items: center;
+  }
+  
+  .cabecalho-ola {
+    font-size: 18px;
+  }
+  

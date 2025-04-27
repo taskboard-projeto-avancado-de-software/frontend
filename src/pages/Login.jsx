@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import "../styles/Login.css";
+import api from "../services/api";
+import { salvarUsuario } from "../services/AuthUsuario"
 
 const Login = () => {
   const navigate = useNavigate();
@@ -13,13 +15,16 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(
-        `http://localhost:3000/usuarios?email=${email}&senha=${senha}`
-      );
-      const data = await response.json();
+
+      const response = await api.get("/usuarios", {
+        params: { email, senha }
+      });
+
+      const data = response.data;
 
       if (data.length > 0) {
-        navigate("/taskboard");
+        salvarUsuario(data[0]);
+        navigate("/home");
       } else {
         setErro("E-mail ou senha inválidos.");
       }

@@ -1,13 +1,15 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/SplashScreen.css";
+import { limparUsuario } from "../services/AuthUsuario";
 
 const SplashScreen = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate("/login");
+      limparUsuario();
+      navigate("/cadastro");
     }, 5000);
 
     return () => clearTimeout(timer);

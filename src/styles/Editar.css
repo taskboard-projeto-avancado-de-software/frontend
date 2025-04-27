@@ -1,0 +1,101 @@
+/* Estilos gerais para o componente de edição de tarefa */
+.tarefas-container {
+    background-color: #1e1e1e; /* Fundo escuro */
+    color: #f4f4f4; /* Cor do texto */
+    padding: 2rem;
+    border-radius: 12px;
+    width: 400px; /* Largura do formulário */
+    margin: 2rem auto; /* Centraliza o formulário na página */
+    box-shadow: 0 0 10px rgba(124, 58, 237, 0.3); /* Sombra suave */
+  }
+  
+  h2 {
+    text-align: center;
+    color: #7c3aed; /* Cor roxa para o título */
+    margin-bottom: 1.5rem;
+  }
+  
+  .tarefa-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  
+  /* Estilos para os campos de input e select */
+  input[type="text"],
+  textarea,
+  select,
+  input[type="date"] {
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid #3a3a3a; /* Borda sutil */
+    background-color: #3a3a3a; /* Fundo dos campos */
+    color: #fff; /* Cor do texto */
+    font-size: 1rem;
+  }
+  
+  input[type="text"]::placeholder,
+  textarea::placeholder {
+    color: #ccc; /* Cor do texto do placeholder */
+  }
+  
+  textarea {
+    resize: vertical;
+    min-height: 100px; /* Define altura mínima para o textarea */
+  }
+  
+  /* Estilo para o botão */
+  button {
+    background-color: #7c3aed; /* Cor do botão */
+    color: #fff;
+    border: none;
+    padding: 0.8rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 1rem;
+  }
+  
+  button:hover {
+    background-color: #6b2da8; /* Cor do botão quando hover */
+  }
+  
+  button:disabled {
+    background-color: #888; /* Cor do botão desabilitado */
+    cursor: not-allowed;
+  }
+  
+  /* Estilo do botão de excluir */
+  button[type="button"] {
+    background-color: #ff5555; /* Cor vermelha para o botão de excluir */
+    margin-top: 1rem;
+  }
+  
+  button[type="button"]:hover {
+    background-color: #e60000; /* Cor vermelha mais intensa quando hover */
+  }
+  
+  /* Estilo para a área de erros */
+  div.error {
+    color: #ff5555;
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  /* Estilos para a exibição de sucesso ou erro */
+  .success {
+    color: #7c3aed;
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  /* Estilos de bordas e transições */
+  input[type="text"]:focus,
+  textarea:focus,
+  select:focus,
+  input[type="date"]:focus {
+    border-color: #7c3aed; /* Borda roxa quando o campo está em foco */
+    outline: none; /* Remove o contorno padrão do navegador */
+    transition: border-color 0.3s ease;
+  }
+  
