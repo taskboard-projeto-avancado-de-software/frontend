@@ -43,6 +43,10 @@ function Listagem() {
   });
   const [draggedItem, setDraggedItem] = useState(null);
 
+
+  // notificacao
+  const [notification, setNotification] = useState('');
+
   // Carrega tarefas inicialmente
   useEffect(() => {
     async function carregar() {
@@ -152,6 +156,22 @@ function Listagem() {
       // Atualização no servidor
       await api.patch(`/tarefas/${draggedItem.id}`, { estado: novoEstado });
 
+
+
+   // Exibir a notificação
+    if(novoEstado==="Feito"){
+
+    setNotification(`Tarefa movida para: ${novoEstado}`);
+
+    // Esconde a notificação após 3 segundos
+    setTimeout(() => {
+      setNotification('');
+    }, 3000); 
+
+    }
+
+
+
     } catch (error) {
       console.error("Erro ao atualizar tarefa:", error);
       setTarefas(tarefas); // Reverte em caso de erro
@@ -169,6 +189,14 @@ function Listagem() {
   return (
 
     <div>
+
+      {/* Renderiza a notificação*/}
+    {notification && (
+      <div className="notification">
+        {notification}
+      </div>
+    )}        
+
       <h2>Listagem de tarefas</h2>
 
       <div className="colunas_tarefas">
