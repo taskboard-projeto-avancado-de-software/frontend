@@ -2,9 +2,11 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Listagem from './Listagem';
 import '../styles/Home.css';
+import { obterNome } from '../services/AuthUsuario';
 
 function Home() {
   const navigate = useNavigate();
+  const nome = obterNome();
 
   return (
     <div className="home-container">
@@ -14,12 +16,15 @@ function Home() {
         <h1 className="title">Home</h1>
 
         <div className="right-side">
-          <span className="greeting">Olá,</span>
+          <span className="greeting">Olá, {nome}</span>
           <button className="header-button" onClick={() => navigate('/pesquisar')}>
             Pesquisar
           </button>
           <button className="header-button" onClick={() => navigate('/criar')}>
             Notificação
+          </button>
+          <button className="header-button" onClick={() => navigate('/')}>
+            Sair
           </button>
         </div>
       </div>

@@ -1,18 +1,24 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Cabecalho.css';
+import { obterNome } from '../services/AuthUsuario'
+import Button from '../components/Button';
 
 function Cabecalho() {
   const navigate = useNavigate();
+  const nome = obterNome();
 
   return (
     <div className="cabecalho">
-      <button className="cabecalho-botao" onClick={() => navigate('/home')}>
+      {/* <button className="cabecalho-botao" onClick={() => navigate('/home')}>
         Voltar
-      </button>
+      </button> */}
+
+      <Button variant='default' onClick={() => navigate('/home')}>
+        Voltar
+      </Button>
 
       <div className="cabecalho-direita">
-        <span className="cabecalho-ola">Olá,</span>
       </div>
     </div>
   );

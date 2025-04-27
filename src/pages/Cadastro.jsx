@@ -20,6 +20,23 @@ const Cadastro = () => {
       return;
     }
 
+    const nomeRegex = /^[A-Za-zÀ-ÿ\s]+$/;
+ 
+     if (!nomeRegex.test(nome)) {
+       setErro("O nome deve conter apenas letras.");
+       return;
+     }
+ 
+     if (nome.length > 50) {
+       setErro("O nome deve ter no máximo 50 caracteres.");
+       return;
+     }
+ 
+     if (senha.length < 8 || senha.length > 16) {
+       setErro("A senha deve ter entre 8 e 16 caracteres.");
+       return;
+     }
+
     try {
       const response = await api.get(`/usuarios`, {
         params: { email }

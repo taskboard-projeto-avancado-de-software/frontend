@@ -14,7 +14,7 @@ function Editar() {
     titulo: '',
     descricao: '',
     prioridade: '',
-    prazo: '',
+    prazo: ''
   });
   const [loading, setLoading] = useState(true);
 
@@ -54,7 +54,7 @@ function Editar() {
     try {
       const response = await api.put(`/tarefas/${tarefaAtual.id}`, tarefaAtual);
       console.log('Tarefa atualizada:', response.data);
-      navigate("/listar");
+      navigate("/home");
     } catch (error) {
       console.error('Erro ao atualizar tarefa:', error);
     }
@@ -68,7 +68,7 @@ function Editar() {
       try {
         await api.delete(`/tarefas/${id}`);
         console.log('Tarefa excluída com sucesso');
-        navigate("/listar");
+        navigate("/home");
       } catch (error) {
         console.error('Erro ao excluir tarefa:', error);
       }
@@ -86,9 +86,8 @@ function Editar() {
       <Cabecalho/>
 
       <div className="tarefas-container">
-        <h2>Gerenciador de Tarefas</h2>
+        <h2>Editar Tarefa</h2>
 
-        {/* Formulário para editar tarefas */}
         <form onSubmit={handleSubmit} className="tarefa-form">
           <input
             type="text"

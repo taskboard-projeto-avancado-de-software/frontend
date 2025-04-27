@@ -2,10 +2,19 @@ import { useEffect, useState } from "react";
 import "../styles/Listar.css"
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
+import { obterId } from "../services/AuthUsuario";
 
 function Listagem() {
   const [tarefas, setTarefas] = useState([]);
   const [colunas, setColunas] = useState([]);
+
+  const idUsuario = obterId();
+
+  const colunaPadrao = {
+    id: "",
+    titulo: "",
+    idUsuario: "defalt"
+  }
 
   //uso do navigate 
   const navigate = useNavigate();
@@ -17,8 +26,12 @@ function Listagem() {
     id: colunas.length,
     titulo: '',
     idUsuario: ''
-
   });
+
+  const novoNomeColunaComIdUsuario = {
+    ...novoNomeColuna,
+    idUsuario:obterId()
+  }
 
   const [foco, setFoco] = useState({
     titulo: "",
@@ -34,7 +47,9 @@ function Listagem() {
   useEffect(() => {
     async function carregar() {
       try {
-        const response = await api.get("/tarefas");
+        const response = await api.get("/tarefas", {
+          params: { idUsuario }
+        });
         setTarefas(response.data);
       } catch (error) {
         console.error('Erro ao carregar tarefas:', error);
@@ -48,14 +63,20 @@ function Listagem() {
   useEffect(() => {
     async function carregarColunas() {
       try {
-        const response = await api.get("/colunas");
-        setColunas(response.data);
+        const [padraoResponse, usuarioResponse] = await Promise.all([
+          api.get("/colunas", { params: { idUsuario: "default" } }),
+          api.get("/colunas", { params: { idUsuario } })
+        ]);
+  
+        const colunasCombinadas = [...padraoResponse.data, ...usuarioResponse.data];
+        setColunas(colunasCombinadas);
       } catch (error) {
         console.error('Erro ao carregar colunas:', error);
       }
     }
     carregarColunas();
   }, []);
+  
 
 
   const handleFocar = (tarefa) => {
@@ -68,7 +89,7 @@ function Listagem() {
     e.preventDefault();
 
     try {
-      const response = await api.post("/colunas", novoNomeColuna);
+      const response = await api.post("/colunas", novoNomeColunaComIdUsuario);
       setColunas([...colunas, response.data]);
       setMostrarInputColuna(false);
       setNovoNomeColuna({
@@ -88,7 +109,7 @@ function Listagem() {
 
     // setColunas({...novoNomeColuna,[name]:value});
 
-    setNovoNomeColuna({ ...novoNomeColuna, [name]: value })
+    setNovoNomeColuna({ ...novoNomeColunaComIdUsuario, [name]: value })
   };
 
   // NOVA FUNÇÃO PARA APAGAR UMA COLUNA

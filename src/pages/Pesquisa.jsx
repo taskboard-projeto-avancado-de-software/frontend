@@ -2,33 +2,43 @@ import { useState } from "react";
 import "../styles/Pesquisa.css";
 import api from "../services/api";
 import Cabecalho from "../components/Cabecalho";
+import { obterId } from "../services/AuthUsuario";
 
 const PesquisaTarefas = () => {
   const [tarefas, setTarefas] = useState([]);
   const [filtros, setFiltros] = useState({
     termoGeral: '',
     prioridade: '',
-    prazo: ''
+    prazo: '',
+    idUsuario: ''
   });
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState('');
 
+  const filtrosComIdUsuario = {
+    ...filtros,
+    idUsuario:obterId()
+  }
+
   const buscarTarefas = async () => {
     setCarregando(true);
     setErro('');
-
+  
     try {
       const params = {};
-
-      if (filtros.termoGeral) {
-        params.q = filtros.termoGeral;
+  
+      if (filtrosComIdUsuario.termoGeral) {
+        params.q = filtrosComIdUsuario.termoGeral;
       }
-
-      if (filtros.prioridade) params.prioridade = filtros.prioridade;
-      if (filtros.prazo) params.prazo = filtros.prazo;
-
+  
+      if (filtrosComIdUsuario.prioridade) params.prioridade = filtrosComIdUsuario.prioridade;
+      if (filtrosComIdUsuario.prazo) params.prazo = filtrosComIdUsuario.prazo;
+  
+      // Adiciona o idUsuario ao filtro
+      if (filtrosComIdUsuario.idUsuario) params.idUsuario = filtrosComIdUsuario.idUsuario;
+  
       const response = await api.get("/tarefas", { params });
-
+  
       setTarefas(response.data);
     } catch (error) {
       setErro(error.message);
@@ -78,7 +88,7 @@ const PesquisaTarefas = () => {
 
         <form onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="termoGeral">Pesquisar (qualquer campo):</label>
+            <label htmlFor="termoGeral">Título, Descrição, Coluna</label>
             <input
               type="text"
               id="termoGeral"
