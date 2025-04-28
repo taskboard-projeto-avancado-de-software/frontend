@@ -8,6 +8,7 @@ import PesquisaTarefas from "./pages/Pesquisa";
 import Listagem from "./pages/Listagem";
 import Editar from "./pages/Edicao";
 import Home from "./pages/Home";
+import Notificacoes from "./pages/Notificacoes";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Route path="/listar" element={<Listagem/>}></Route>
       <Route path="/editar/:id" element={<Editar/>}></Route>
       <Route path="/home" element={<Home/>}></Route>
+      <Route path="/notificacoes" element={<Notificacoes/>}></Route>
     </Routes>
   );
 }

@@ -153,7 +153,7 @@ function Listagem() {
       if (novoEstado === "Feito") {
 
         setNotification(`Tarefa Concluída, você moveu a tarefa para Feito.`);
-
+        api.post('/notificacoes', {mensagem:`Tarefa Concluída, você moveu a tarefa ${draggedItem.titulo} para Feito.`, idTarefa: draggedItem.id, idUsuario: draggedItem.idUsuario, lida: false})
         // Esconde a notificação após 3 segundos
         setTimeout(() => {
           setNotification('');

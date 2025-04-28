@@ -23,6 +23,9 @@ function Home() {
           <Button onClick={() => navigate('/pesquisar')}>
             Pesquisar Tarefa
           </Button>
+          <Button onClick={() => navigate('/notificacoes')}>
+            Notificações
+          </Button>
           <Button onClick={() => navigate('/')}>
             Sair
           </Button>
